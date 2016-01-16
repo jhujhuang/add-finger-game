@@ -7,24 +7,47 @@
 
     HomeController.$inject = ['$rootScope', '$routeParams'];
     function HomeController($rootScope, $routeParams) {
-        var callback = function(){
-            $rootScope.$apply()
-        }   // TODO: Bind so that no calling callback everytime something changes
+
+        /* Register services. "Make the socket" */
+
+        var socket = (function ($rootScope) {
+          var socket = io.connect('http://localhost');
+          return {
+            on: function (eventName, callback) {
+              socket.on(eventName, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                  callback.apply(socket, args);
+                });
+              });
+            },
+            emit: function (eventName, data, callback) {
+              socket.emit(eventName, data, function () {
+                var args = arguments;
+                $rootScope.$apply(function () {
+                  if (callback) {
+                    callback.apply(socket, args);
+                  }
+                });
+              })
+            }
+          };
+        })($rootScope);
+        console.log('made socket');
+
+        socket.on('send:time', function (data) {
+            vm.time = data.time;
+            console.log('received time update' + vm.time);
+        });
+
+        /* Local variables */
 
         var vm = this;
         vm.time = 'TIME';
 
         vm.test = function() {
-            alert(vm.time);
+            vm.time = 'TESTTEST';
         };
-
-        var socket = io.connect('http://localhost');
-        console.log('made socket');
-        socket.on('send:time', function (data) {
-            vm.time = data.time;
-            console.log('received time update' + vm.time);
-            callback();
-        });
 
         // some jQuery to make a link serve as an input option TODO: delete all
         $("#save_link").on('click', function(e) {
