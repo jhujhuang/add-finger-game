@@ -5,8 +5,23 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$rootScope', '$http', '$routeParams'];
-    function HomeController($rootScope, $http, $routeParams) {
+    HomeController.$inject = ['$rootScope', '$routeParams'];
+    function HomeController($rootScope, $routeParams) {
+
+        var vm = this;
+        vm.time = 'TIME';
+
+        vm.test = function() {
+            alert(vm.time);
+        };
+
+        var socket = io.connect('http://localhost');
+        console.log('made socket');
+        socket.on('send:time', function (data) {
+            console.log('previous time:' + vm.time);
+            vm.time = data.time;
+            console.log('received time update' + vm.time);
+        });
 
         // some jQuery to make a link serve as an input option TODO: delete all
         $("#save_link").on('click', function(e) {
@@ -84,8 +99,6 @@
             }
         });
 
-
-        var vm = this;
 
         initController();
 

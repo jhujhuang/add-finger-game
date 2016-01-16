@@ -28,8 +28,8 @@
             });
     }
 
-    run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
-    function run($rootScope, $location, $cookieStore, $http) {
+    run.$inject = ['$rootScope', '$location', '$cookieStore'];
+    function run($rootScope, $location, $cookieStore) {
         // automatically update page title
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
             $rootScope.title = current.$$route.title;
