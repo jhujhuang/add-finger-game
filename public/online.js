@@ -3,10 +3,10 @@
 
     angular
         .module('app')
-        .controller('HomeController', HomeController);
+        .controller('GameController', GameController);
 
-    HomeController.$inject = ['$rootScope', '$routeParams'];
-    function HomeController($rootScope, $routeParams) {
+    GameController.$inject = ['$rootScope', '$routeParams'];
+    function GameController($rootScope, $routeParams) {
 
         /* Register services. "Make the socket" */
 

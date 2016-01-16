@@ -10,7 +10,7 @@
     function config($routeProvider) {
         $routeProvider
             .when('/', {
-                controller: 'HomeController',
+                controller: 'GameController',
                 templateUrl: 'views/game.html',
                 controllerAs: 'vm',
                 title: 'Add Finger Game!'
@@ -18,7 +18,7 @@
 
             .when('/online/:pId', {
                 templateUrl: 'views/game.html',
-                controller: 'HomeController',
+                controller: 'GameController',
                 controllerAs: 'vm',
                 title: 'Playing | Add Finger Game'
             })
