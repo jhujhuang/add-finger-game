@@ -7,6 +7,9 @@
 
     HomeController.$inject = ['$rootScope', '$routeParams'];
     function HomeController($rootScope, $routeParams) {
+        var callback = function(){
+            $rootScope.$apply()
+        }   // TODO: Bind so that no calling callback everytime something changes
 
         var vm = this;
         vm.time = 'TIME';
@@ -18,9 +21,9 @@
         var socket = io.connect('http://localhost');
         console.log('made socket');
         socket.on('send:time', function (data) {
-            console.log('previous time:' + vm.time);
             vm.time = data.time;
             console.log('received time update' + vm.time);
+            callback();
         });
 
         // some jQuery to make a link serve as an input option TODO: delete all
